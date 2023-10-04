@@ -1,0 +1,28 @@
+name: Run examples
+
+on:
+  # Run on all PRs
+  pull_request:
+    paths-ignore:
+      - "**.md"
+  # Run when a PR is merged into main
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "**.md"
+
+jobs:
+  test:
+    name: Run examples
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+      - name: Install Roc
+        uses: hasnep/setup-roc@main
+        with:
+          roc-version: nightly
+      - name: Run all examples
+        run: |
+          find examples -name "*.roc" -exec roc run {} \;
